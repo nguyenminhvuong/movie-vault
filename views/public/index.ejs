@@ -1,0 +1,49 @@
+<div class="container">
+  <h1>Browse Movies</h1>
+  
+  <div class="genre-filters">
+    <h3>Browse by Genre:</h3>
+    <a href="/genre/Action" class="genre-tag">Action</a>
+    <a href="/genre/Comedy" class="genre-tag">Comedy</a>
+    <a href="/genre/Drama" class="genre-tag">Drama</a>
+    <a href="/genre/Horror" class="genre-tag">Horror</a>
+    <a href="/genre/Sci-Fi" class="genre-tag">Sci-Fi</a>
+    <a href="/genre/Romance" class="genre-tag">Romance</a>
+    <a href="/genre/Thriller" class="genre-tag">Thriller</a>
+  </div>
+  
+  <div class="movies-grid">
+    <% if (movies.length === 0) { %>
+      <p class="no-movies">No movies found. <% if (isAdmin) { %><a href="/admin/movies/new">Add the first movie!</a><% } %></p>
+    <% } else { %>
+      <% movies.forEach(movie => { %>
+        <div class="movie-card">
+          <a href="/movie/<%= movie._id %>">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" class="movie-poster">
+            <div class="movie-info">
+              <h3><%= movie.title %></h3>
+              <p class="movie-year"><%= movie.year %></p>
+              <p class="movie-rating">⭐ <%= movie.rating %>/10</p>
+            </div>
+          </a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+  
+  <% if (totalPages > 1) { %>
+    <div class="pagination">
+      <% if (currentPage > 1) { %>
+        <a href="?page=<%= currentPage - 1 %>" class="page-link">Previous</a>
+      <% } %>
+      
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="?page=<%= i %>" class="page-link <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+      
+      <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>" class="page-link">Next</a>
+      <% } %>
+    </div>
+  <% } %>
+</div>

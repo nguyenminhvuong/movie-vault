@@ -1,0 +1,6 @@
+<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="450" fill="#1a1a1a"/>
+  <text x="150" y="200" font-family="Arial, sans-serif" font-size="48" fill="#ffd700" text-anchor="middle">🎬</text>
+  <text x="150" y="260" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle">No Poster</text>
+  <text x="150" y="285" font-family="Arial, sans-serif" font-size="16" fill="#999999" text-anchor="middle">Available</text>
+</svg>
