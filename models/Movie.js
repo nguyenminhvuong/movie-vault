@@ -86,7 +86,7 @@ movieSchema.methods.calculateAverageRating = function() {
     return 0;
   }
   const sum = this.reviews.reduce((acc, review) => acc + review.rating, 0);
-  this.rating = (sum / this.reviews.length).toFixed(1);
+  this.rating = Math.round((sum / this.reviews.length) * 10) / 10;
   return this.rating;
 };
 
