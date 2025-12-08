@@ -75,9 +75,8 @@ const movieSchema = new mongoose.Schema({
 });
 
 // Update the updatedAt field before saving
-movieSchema.pre('save', function(next) {
+movieSchema.pre('save', function() {
   this.updatedAt = Date.now();
-  next();
 });
 
 // Calculate average rating from reviews

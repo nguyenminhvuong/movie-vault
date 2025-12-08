@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const { default: MongoStore } = require('connect-mongo');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const path = require('path');
@@ -11,10 +11,7 @@ const app = express();
 
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie-vault';
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(MONGODB_URI)
 .then(() => console.log('MongoDB connected successfully'))
 .catch(err => console.error('MongoDB connection error:', err));
 
@@ -29,14 +26,16 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Session configuration
+const sessionStore = MongoStore.create({
+  mongoUrl: MONGODB_URI,
+  touchAfter: 24 * 3600
+});
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'movie-vault-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: MONGODB_URI,
-    touchAfter: 24 * 3600
-  }),
+  store: sessionStore,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
   }
