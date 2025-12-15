@@ -1,7 +1,7 @@
 import http from 'http';
 import dotenv from 'dotenv';
 import app from '../app.js';
-import { mysqlConnect, mysqlDisconnect } from './services/mysql.js';
+import { mysqlConnect } from './services/mysql.js';
 
 dotenv.config();
 
