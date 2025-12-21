@@ -1,7 +1,10 @@
 import express from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
 import morgan from 'morgan';
-import indexRouter from './src/routes/index.js';
+
+import indexRouter from './src/routes/indexRoute.js';
+import userRouter from './src/routes/userRoute.js';
+
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -13,6 +16,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Template engine setup
@@ -23,5 +27,6 @@ app.set('views', './src/views');
 
 // Routes
 app.use('/', indexRouter);
+app.use('/', userRouter);
 
 export default app;
