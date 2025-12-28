@@ -22,6 +22,14 @@ const createUserAsync = async (req, res) => {
         error.push('Email is required');
     }
 
+    const existingUser = await findUserByEmailAsync(req.body.email);
+
+    console.log('Existing user:', existingUser);
+
+    if(existingUser) {
+        error.push('Email already in use');
+    }
+
     if(error.length > 0) {
         return res.status(400).json({ errors: error });
     }
@@ -37,13 +45,22 @@ const createUserAsync = async (req, res) => {
 
     try {
         const [result] = await db.query(sql, params);
-        return res.status(201).json({ message: 'User created successfully', userId: result.insertId });
+        return res.redirect('/')
     } catch (err) {
         return res.status(500).json({ error: 'Database error', details: err.message });
     }
 
 };
 
+
+const findUserByEmailAsync = async (email) => {
+    const sql = 'SELECT * FROM user WHERE email = ?';
+    const params = [email];
+    const [rows] = await db.query(sql, params);
+    return rows[0];
+};
+
 export default {
-    createUserAsync
+    createUserAsync,
+    findUserByEmailAsync
 };
