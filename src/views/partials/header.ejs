@@ -5,9 +5,9 @@
         <h3>Login</h3>
         <form method="post" action="/login">
         	<div class="row">
-        		 <label for="username">
-                    Username:
-                    <input type="text" name="username" id="username" placeholder="Hugh Jackman" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
+        		 <label for="email">
+                    Email:
+                    <input type="email" name="email" id="email" placeholder="example@example.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required="required" />
                 </label>
         	</div>
            
@@ -117,8 +117,17 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<% if (currentUser) { %>
+							<li class="dropdown first">
+								<a class="btn btn-default" href="#"> Welcome, <%= currentUser.username %> </a>
+							</li>
+							<li class="dropdown first">
+								<a class="btn btn-default" href="/logout"> Log Out </a>
+							</li>
+						<% } else { %>
 						<li class="loginLink"><a href="#">LOG In</a></li>
 						<li class="btn signupLink"><a href="#">sign up</a></li>
+						<% } %>
 					</ul>
 				</div>
 			<!-- /.navbar-collapse -->

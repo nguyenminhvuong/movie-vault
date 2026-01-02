@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../config/db.js';
 import md5 from 'md5';
+import { log } from 'console';
 
 const app = express();
 const api = express.Router();
@@ -52,6 +53,37 @@ const createUserAsync = async (req, res) => {
 
 };
 
+const loginUserAsync = async (req, res) => {
+    const error = [];
+    if(!req.body.email) {
+        error.push('Email is required');
+    }
+    if(!req.body.password) {
+        error.push('Password is required');
+    }
+    
+    const user = await findUserByEmailAsync(req.body.email);
+
+    if(!user || user.password_hash !== md5(req.body.password)) {
+        error.push('Invalid email or password');
+    }
+
+    if(error.length > 0) {
+        return res.status(400).json({ errors: error });
+    }
+
+    req.session.user = {
+        id: user.id,
+        username: user.username,
+        email: user.email
+    };
+    
+    if(req.headers.referer && req.headers.referer.includes('/dashboard/login')) {
+        return res.redirect('/dashboard');
+    }
+
+    return res.redirect('/');
+};
 
 const findUserByEmailAsync = async (email) => {
     const sql = 'SELECT * FROM user WHERE email = ?';
@@ -62,5 +94,5 @@ const findUserByEmailAsync = async (email) => {
 
 export default {
     createUserAsync,
-    findUserByEmailAsync
+    loginUserAsync
 };
